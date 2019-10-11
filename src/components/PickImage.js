@@ -1,26 +1,12 @@
 import React, { useState } from 'react';
-import { Image, ImageEditor, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import uuid from 'uuid/v4';
 import firebase from 'firebase';
 
-const PickImage = ({ imageSource, setImageSource, setImageUrl }) => {
-    const [uploading, setUploading] = useState(false);
-    const [progress, setProgress] = useState(0);
-    const [image, setImage] = useState('');
-
-    const disabledStyle = uploading ? styles.disabledBtn : {};
-    const actionBtnStyles = [styles.btn, disabledStyle];
-
-    const options = {
-        title: 'Select Image',
-        storageOptions: {
-          skipBackup: true,
-          path: 'images'
-        }
-    };
-
+const PickImage = ({ imageUrl, setImageUrl }) => {
+  console.log(imageUrl);
     askPermissionsAsync = async () => {
         //await Permissions.askAsync(Permissions.CAMERA);
         await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -28,7 +14,7 @@ const PickImage = ({ imageSource, setImageSource, setImageUrl }) => {
         // are actually granted, but I'm skipping that for brevity
     };
     
-    const _pickImage = async () => {
+    const pickImage = async () => {
         await askPermissionsAsync();
     
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -39,28 +25,11 @@ const PickImage = ({ imageSource, setImageSource, setImageUrl }) => {
         if (result.cancelled) {
           return;
         }
-    
-        let resizedUri = await new Promise((resolve, reject) => {
-          ImageEditor.cropImage(result.uri,
-            {
-              offset: { x: 0, y: 0 },
-              size: { width: result.width, height: result.height },
-              displaySize: { width: 50, height: 50 },
-              resizeMode: 'contain',
-            },
-            (uri) => resolve(uri),
-            () => reject(),
-          );
-        });
 
-        setImage(result.uri);
-        const source = { uri: result.uri };
-        setImageSource(source);
-
-        _uploadImageAsync(result.uri);
+        uploadImageAsync(result.uri);
     };
     
-    const _uploadImageAsync = async(imageUri) => {
+    const uploadImageAsync = async(imageUri) => {
         // Why are we using XMLHttpRequest? See:
         // https://github.com/expo/expo/issues/2402#issuecomment-443726662
         const blob = await new Promise((resolve, reject) => {
@@ -91,41 +60,14 @@ const PickImage = ({ imageSource, setImageSource, setImageUrl }) => {
 
     return (
         <View style={styles.container}> 
-            <TouchableOpacity
-                style={actionBtnStyles}
-                onPress={_pickImage}
-                disabled={uploading}
-            >
+            <TouchableOpacity style={styles.btn} onPress={pickImage}>
                 <View>
                     <Text style={styles.btnTxt}>Pick image</Text>
                 </View>
             </TouchableOpacity>
-            {/** Display selected image */}
-            {/** {imageSource.length > 0 && ( */}
-            {imageSource !== '' && (
-            
+            {imageUrl !== '' && (
                 <View>
-                    <Image source={imageSource} style={styles.newimage} />
-                    {uploading && (
-                        <View
-                        style={[styles.progressBar, { width: `${progress}%` }]}
-                        />
-                    )}
-                    {/**
-                    <TouchableOpacity
-                        style={actionBtnStyles}
-                        onPress={_uploadImageAsync}
-                        disabled={uploading}
-                    >
-                        <View>
-                        {uploading ? (
-                            <Text style={styles.btnTxt}>Uploading ...</Text>
-                        ) : (
-                            <Text style={styles.btnTxt}>Upload image</Text>
-                        )}
-                        </View>
-                    </TouchableOpacity>
-                    */}
+                    <Image source={{ uri: imageUrl }} style={styles.image} />
                 </View>
             )}
         </View>
@@ -155,19 +97,11 @@ const styles = StyleSheet.create({
       btnTxt: {
         color: '#fff'
       },
-      disabledBtn: {
-        backgroundColor: 'rgba(3,155,229,0.5)'
-      },
-      newimage: {
+      image: {
         width: '90%',
         height: 120,
         borderRadius: 4,
         marginBottom: 5
-      },
-      progressBar: {
-        backgroundColor: 'rgb(3, 154, 229)',
-        height: 3,
-        shadowColor: '#000',
       }
 });
 

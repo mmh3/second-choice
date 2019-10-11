@@ -12,14 +12,10 @@ const CreateAlternateForm = ({ initialValues }) => {
   const [originalImageUrl, setOriginalImageUrl] = useState('');
   const [originalUid, setOriginalUid] = useState('');
   const [originalGroupUid, setOriginalGroupUid] = useState('');
-  const [originalImageSource, setOriginalImageSource] = useState('');
   
   const [alternative, setAlternative] = useState(initialValues.alternative);
   const [alternateKey, setAlternateKey] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  const [imageSource, setImageSource] = useState('');
-
-  const windowWidth = Dimensions.get('window').width;
 
   const retrieveOriginalAsync = async(isOriginal) => {
     try {
@@ -32,9 +28,6 @@ const CreateAlternateForm = ({ initialValues }) => {
                 setOriginalUid(childSnapshot.val().uid);
                 setOriginalImageUrl(childSnapshot.val().imageUrl);
                 setOriginalGroupUid(childSnapshot.val().groupUid);
-
-                const source = { uri: childSnapshot.val().imageUrl };
-                setOriginalImageSource(source);
             })
           }
         });
@@ -53,9 +46,6 @@ const CreateAlternateForm = ({ initialValues }) => {
             // TODO: figure out how to do this without a foreach...
             snapshot.forEach(function(childSnapshot) {
                 setAlternateKey(childSnapshot.key);
-
-                const source = { uri: childSnapshot.val().imageUrl };
-                setImageSource(source);
             })
           }
         });
@@ -69,7 +59,8 @@ const CreateAlternateForm = ({ initialValues }) => {
     // Create / Update the original
     if (!originalUid) { //originalUid!== undefined && originalUid !== null && originalUid !== '')
       groupUid = uuid();
-      firebase.database().ref('/food').push({uid: uuid(), name: original, groupUid: groupUid, imageUrl: originalImageUrl});
+      foodUid = uuid();
+      firebase.database().ref('/food/' + foodUid).set({uid: foodUid, name: original, groupUid: groupUid, imageUrl: originalImageUrl});
     }
     else {
       groupUid = originalGroupUid;
@@ -82,7 +73,7 @@ const CreateAlternateForm = ({ initialValues }) => {
       alternateFood.name = alternative;
       alternateFood.imageUrl = imageUrl;
       alternateFood.groupUid = groupUid;
-      firebase.database().ref('/food').push(alternateFood);
+      firebase.database().ref('/food/' + alternateFood.uid).set(alternateFood);
     }
     else {
       firebase.database().ref('/food').child(alternateKey).update({ groupUid: groupUid });
@@ -93,11 +84,9 @@ const CreateAlternateForm = ({ initialValues }) => {
     setOriginalUid('');
     setOriginalGroupUid('');
     setOriginalImageUrl('');
-    setOriginalImageSource('');
     setAlternative(null);
     setAlternateKey('');
     setImageUrl('');
-    setImageSource('');
 
     // TODO: Clear the search results
 }
@@ -113,8 +102,7 @@ const CreateAlternateForm = ({ initialValues }) => {
         onEndEditing={() => retrieveOriginalAsync(true)}
       />
       <PickImage 
-        imageSource={originalImageSource}
-        setImageSource={(source) => setOriginalImageSource(source)} 
+        imageUrl={originalImageUrl}
         setImageUrl={(url) => setOriginalImageUrl(url)} 
       />
       <Text style={styles.label}>Healthier Alternative:</Text>
@@ -124,27 +112,8 @@ const CreateAlternateForm = ({ initialValues }) => {
         onChangeText={text => setAlternative(text)}
         onEndEditing={() => retrieveAlternateAsync()}
       />
-      {/**
-      <Text style={styles.label}>Image URL:</Text>
-      <TextInput
-        style={styles.input}
-        value={imageUrl}
-        onChangeText={text => setImageUrl(text)}
-        autoCapitalize={'none'}
-        autoCorrect={false}
-      />
-      <Text style={styles.label}>Notes:</Text>
-      <TextInput
-        multiline={true}
-        numberOfLines={3}
-        maxLength={200}
-        style={[styles.input, {height: 150}]}
-        value={notes}
-        onChangeText={text => setNotes(text)}
-      />*/}
       <PickImage 
-        imageSource={imageSource}
-        setImageSource={(source) => setImageSource(source)} 
+        imageUrl={imageUrl}
         setImageUrl={(url) => setImageUrl(url)}
       />
       <Button title="Save" onPress={onSubmitAsync} />
