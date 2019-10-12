@@ -134,23 +134,17 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 18,
     borderWidth: 1,
-    borderColor: 'black',
-    marginBottom: 15,
+    borderColor: 'rgb(76, 203, 255)',
+    borderRadius: 5,
     padding: 5,
-    margin: 5
+    margin: 5,
+    marginBottom: 0
   },
   label: {
-    fontSize: 20,
-    marginBottom: 5,
-    marginLeft: 5
-  },
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: '#ffffff',
-    marginTop: 20,
-    paddingLeft: 5,
-    paddingRight: 5
+    fontSize: 18,
+    margin: 5,
+    marginBottom: 10,
+    marginTop: 15
   },
   btn: {
     paddingLeft: 20,
@@ -159,42 +153,9 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgb(3, 154, 229)',
+    backgroundColor: 'rgb(76, 203, 255)',
     marginTop: 20,
     alignItems: 'center'
-  },
-  disabledBtn: {
-    backgroundColor: 'rgba(3,155,229,0.5)'
-  },
-  btnTxt: {
-    color: '#fff'
-  },
-  image: {
-    marginTop: 20,
-    minWidth: 200,
-    height: 200,
-    resizeMode: 'contain',
-    backgroundColor: '#ccc',
-  },
-  newimage: {
-    width: '90%',
-    height: 120,
-    borderRadius: 4,
-    marginBottom: 5
-  },
-  img: {
-    flex: 1,
-    height: 100,
-    margin: 5,
-    resizeMode: 'contain',
-    borderWidth: 1,
-    borderColor: '#eee',
-    backgroundColor: '#ccc'
-  },
-  progressBar: {
-    backgroundColor: 'rgb(3, 154, 229)',
-    height: 3,
-    shadowColor: '#000',
   }
 });
 

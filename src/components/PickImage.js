@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
@@ -62,7 +62,7 @@ const PickImage = ({ imageUrl, setImageUrl }) => {
         <View style={styles.container}> 
             <TouchableOpacity style={styles.btn} onPress={pickImage}>
                 <View>
-                    <Text style={styles.btnTxt}>Pick image</Text>
+                    <Text style={styles.btnTxt}>Image</Text>
                 </View>
             </TouchableOpacity>
             {imageUrl !== '' && (
@@ -79,22 +79,20 @@ const styles = StyleSheet.create({
         //flex: 1,
         flexDirection: 'column',
         backgroundColor: '#ffffff',
-        marginTop: 20,
+        marginTop: 0,
         paddingLeft: 5,
         paddingRight: 5
       },
       btn: {
-        paddingLeft: 20,
-        paddingRight: 20,
-        paddingTop: 10,
-        paddingBottom: 10,
-        height: 40,
-        borderRadius: 20,
-        backgroundColor: 'rgb(3, 154, 229)',
-        marginTop: 20,
+        padding: 5,
+        borderRadius: 5,
+        fontSize: 18,
+        backgroundColor: 'rgb(76, 203, 255)',
+        marginTop: 0,
         alignItems: 'center'
       },
       btnTxt: {
+        fontSize: 18,
         color: '#fff'
       },
       image: {
