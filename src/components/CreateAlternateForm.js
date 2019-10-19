@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, Dimensions, ScrollView } from 'react-native';
-import PickImage from './PickImage';
+import {Text, StyleSheet, Button, ScrollView } from 'react-native';
 import TextInputWithImage from './TextInputWithImage';
 import firebase from 'firebase';
 import uuid from 'uuid/v4';
