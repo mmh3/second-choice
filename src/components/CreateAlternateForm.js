@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Button, Dimensions, ScrollView } from 'react-native';
 import PickImage from './PickImage';
+import TextInputWithImage from './TextInputWithImage';
 import firebase from 'firebase';
 import uuid from 'uuid/v4';
 
@@ -17,7 +18,7 @@ const CreateAlternateForm = ({ initialValues }) => {
   const [alternateKey, setAlternateKey] = useState('');
   const [imageUrl, setImageUrl] = useState('');
 
-  const retrieveOriginalAsync = async(isOriginal) => {
+  const retrieveOriginalAsync = async() => {
     try {
       firebase.database().ref('/food').orderByChild('name').equalTo(original)
         .once('value', snapshot => {
@@ -95,24 +96,18 @@ const CreateAlternateForm = ({ initialValues }) => {
     <ScrollView scrollEnabled={true}>
       
       <Text style={styles.label}>First Choice:</Text>
-      <TextInput
-        style={styles.input}
-        value={original}
-        onChangeText={text => setOriginal(text)}
-        onEndEditing={() => retrieveOriginalAsync(true)}
-      />
-      <PickImage 
+      <TextInputWithImage
+        value = {original}
+        onChangeText = {text => setOriginal(text)}
+        onEndEditing={() => retrieveOriginalAsync()}
         imageUrl={originalImageUrl}
-        setImageUrl={(url) => setOriginalImageUrl(url)} 
+        setImageUrl={(url) => setOriginalImageUrl(url)}
       />
       <Text style={styles.label}>Healthier Alternative:</Text>
-      <TextInput
-        style={styles.input}
-        value={alternative}
-        onChangeText={text => setAlternative(text)}
+      <TextInputWithImage
+        value = {alternative}
+        onChangeText = {text => setAlternative(text)}
         onEndEditing={() => retrieveAlternateAsync()}
-      />
-      <PickImage 
         imageUrl={imageUrl}
         setImageUrl={(url) => setImageUrl(url)}
       />
@@ -135,7 +130,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     borderWidth: 1,
     borderColor: 'rgb(76, 203, 255)',
-    borderRadius: 5,
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5,
     padding: 5,
     margin: 5,
     marginBottom: 0
