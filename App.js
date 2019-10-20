@@ -3,13 +3,17 @@ import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import React, { useState } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import ReduxThunk from 'redux-thunk';
 import { Ionicons } from '@expo/vector-icons';
 import firebase from 'firebase';
-
 import AppNavigator from './src/navigation/AppNavigator';
+import reducers from './src/reducers';
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
+  const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return (
@@ -21,10 +25,12 @@ export default function App(props) {
     );
   } else {
     return (
+      <Provider store={store}>
       <View style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <AppNavigator />
       </View>
+      </Provider>
     );
   }
 }

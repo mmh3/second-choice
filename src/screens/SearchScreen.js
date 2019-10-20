@@ -3,8 +3,10 @@ import { ScrollView, StyleSheet } from 'react-native';
 import SearchBar from '../components/SearchBar';
 import firebase from 'firebase';
 import ResultsList from '../components/ResultsList';
+import { search } from '../actions/ResultsActions';
+import { connect } from 'react-redux';
 
-export default function SearchScreen() {
+function SearchScreen(props) {
   const [term, setTerm] = useState('');
   const [results, setResults] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
@@ -34,17 +36,18 @@ export default function SearchScreen() {
     }
   };
 
+  console.log('results: ' + props.results);
   return (
     <>
       <SearchBar
         term={term}
         onTermChange={setTerm}
-        onTermSubmit={() => searchApi(term)}
+        onTermSubmit={() => {console.log('test: ' + term); props.search(term);}} //searchApi(term)}
       />
       {errorMessage ? <Text>{errorMessage}</Text> : null}
       <ScrollView style={styles.container}>
         <ResultsList
-          results={results}
+          results={props.results}
           title="Second Choices"
         />
       </ScrollView>
@@ -63,3 +66,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 });
+
+const mapStateToProps = (state) => {
+  const { results } = state.results;
+
+  return { results };
+};
+
+export default connect(mapStateToProps, { search })(SearchScreen);
