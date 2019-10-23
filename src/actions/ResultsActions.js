@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import { RESULTS_RETRIEVE } from '../actions/types';
+import { RESULTS_RETRIEVE, RESULTS_UPDATE } from '../actions/types';
 
 export const search = (searchTerm) => {
     try {
@@ -30,3 +30,15 @@ export const search = (searchTerm) => {
       //setErrorMessage('Something went wrong');
     }
   };
+
+export const updateResult = (index, food) => {
+    try {
+        return (dispatch) => {
+            console.log('food: ' + food.uid + ' ' + food.name + ' ' + food.imageUrl);
+            firebase.database().ref('/food').child(food.uid).update({name: food.name, imageUrl: food.imageUrl});
+            dispatch({type: RESULTS_UPDATE, payload: {index, food} });
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}

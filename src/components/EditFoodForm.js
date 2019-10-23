@@ -2,18 +2,22 @@ import React, { useState } from 'react';
 import { Text, StyleSheet, Button, ScrollView } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import TextInputWithImage from './TextInputWithImage';
-import firebase from 'firebase';
+import { connect } from 'react-redux';
+import { updateResult } from '../actions/ResultsActions';
 
-const EditFoodForm = ({ food, navigation }) => {
+const EditFoodForm = (props) => {
   // TODO: figure out how to track this with an object. Couldn't get the set to work with the object...
-  const [name, setName] = useState(food.name);
-  const [imageUrl, setImageUrl] = useState(food.imageUrl);
+  const [name, setName] = useState(props.food.name);
+  const [imageUrl, setImageUrl] = useState(props.food.imageUrl);
 
   const onSubmitAsync = async() => {
-    firebase.database().ref('/food').child(food.uid).update({name: name, imageUrl: imageUrl});
+    var food = props.food;
+    food.name = name;
+    food.imageUrl = imageUrl;
+    props.updateResult(props.resultIndex, food);
 
-  navigation.goBack(null);
-}
+    props.navigation.goBack(null);
+  }
 
   return (
     <ScrollView scrollEnabled={true}>
@@ -47,4 +51,10 @@ const styles = StyleSheet.create({
   }
 });
 
-export default withNavigation(EditFoodForm);
+const mapStateToProps = (state) => {
+  const { results } = state.results;
+
+  return { results };
+};
+
+export default connect(mapStateToProps, {updateResult})(withNavigation(EditFoodForm));

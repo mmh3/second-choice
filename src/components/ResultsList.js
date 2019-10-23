@@ -25,11 +25,11 @@ const ResultsList = ({ title, results, navigation }) => {
         showsVerticalScrollIndicator={false}
         data={results}
         keyExtractor={result => result.uid}
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           return (
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('FoodEdit', { food: item })
+                navigation.navigate('FoodEdit', { food: item, resultsIndex: index })
               }
             >
               <ResultsDetail result={item} />
