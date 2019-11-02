@@ -1,5 +1,5 @@
-import React from 'react';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { ActivityIndicator, Image, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import uuid from 'uuid/v4';
@@ -7,7 +7,8 @@ import firebase from 'firebase';
 import { Feather } from '@expo/vector-icons';
 
 const TextInputWithImage = ({ value, onChangeText, onEndEditing, imageUrl, setImageUrl }) => {
-  console.log(imageUrl);
+  const [uploading, setUploading] = useState(false);
+
     askPermissionsAsync = async () => {
         //await Permissions.askAsync(Permissions.CAMERA);
         await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -31,6 +32,8 @@ const TextInputWithImage = ({ value, onChangeText, onEndEditing, imageUrl, setIm
     };
     
     const uploadImageAsync = async(imageUri) => {
+      setUploading(true);
+
         // Why are we using XMLHttpRequest? See:
         // https://github.com/expo/expo/issues/2402#issuecomment-443726662
         const blob = await new Promise((resolve, reject) => {
@@ -57,6 +60,8 @@ const TextInputWithImage = ({ value, onChangeText, onEndEditing, imageUrl, setIm
         blob.close();
         var url = await snapshot.ref.getDownloadURL();
         setImageUrl(url);
+
+      setUploading(false);
     };
 
     return (
@@ -74,11 +79,15 @@ const TextInputWithImage = ({ value, onChangeText, onEndEditing, imageUrl, setIm
                     </View>
                 </TouchableOpacity>
             </View>
-            {imageUrl !== '' && (
+            {imageUrl !== '' ? (
                 <View>
                     <Image source={{ uri: imageUrl }} style={styles.image} />
                 </View>
-            )}
+            ) : ( uploading && (
+              <View>
+                <ActivityIndicator size="large" color="rgb(76, 203, 255)" />
+              </View>
+            ))}
         </View>
     );
 };
