@@ -9,7 +9,7 @@ export default function ContributeScreen() {
 }
 
 ContributeScreen.navigationOptions = {
-  title: 'Contribute',
+  title: 'Second Choice',
 };
 
 const styles = StyleSheet.create({

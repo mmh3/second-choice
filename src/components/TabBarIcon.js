@@ -13,7 +13,7 @@ export default function TabBarIcon(props) {
           name={props.name}
           size={26}
           style={{ marginBottom: -3 }}
-          color={props.focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+          color={props.focused ? 'rgb(76, 203, 255)' : Colors.tabIconDefault}
         />
       );
     default:
@@ -22,7 +22,7 @@ export default function TabBarIcon(props) {
           name={props.name}
           size={26}
           style={{ marginBottom: -3 }}
-          color={props.focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+          color={props.focused ? 'rgb(76, 203, 255)' : Colors.tabIconDefault}
         />
       );
   }

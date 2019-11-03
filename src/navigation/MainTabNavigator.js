@@ -17,6 +17,20 @@ const IdeasStack = createStackNavigator(
   {
     Ideas: IdeasScreen,
   },
+  {
+    defaultNavigationOptions:
+    {
+      headerTintColor: '#FFFFFF',
+      headerStyle: {
+        backgroundColor: "rgb(76, 203, 255)"
+      },
+      headerTitleStyle: {
+        fontFamily: "rellive",
+        fontSize: 36,
+        fontWeight: "500"
+      }
+    }
+  },
   config
 );
 
@@ -37,6 +51,20 @@ const SearchStack = createStackNavigator(
     Search: SearchScreen,
     FoodEdit: FoodEditScreen,
   },
+  {
+    defaultNavigationOptions:
+    {
+      headerTintColor: '#FFFFFF',
+      headerStyle: {
+        backgroundColor: "rgb(76, 203, 255)"
+      },
+      headerTitleStyle: {
+        fontFamily: "rellive",
+        fontSize: 36,
+        fontWeight: "500"
+      }
+    }
+  },
   config
 );
 
@@ -53,11 +81,26 @@ const ContributeStack = createStackNavigator(
   {
     Contribute: ContributeScreen,
   },
+  {
+    defaultNavigationOptions:
+    {
+      headerTintColor: '#FFFFFF',
+      headerStyle: {
+        backgroundColor: "rgb(76, 203, 255)"
+      },
+      headerTitleStyle: {
+        fontFamily: "rellive",
+        fontSize: 36,
+        fontWeight: "500"
+      }
+    }
+  },
   config
 );
 
 ContributeStack.navigationOptions = {
   tabBarLabel: 'Contribute',
+  
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={'comment-plus-outline'} />
   ),

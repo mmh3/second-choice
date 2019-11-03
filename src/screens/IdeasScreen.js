@@ -15,7 +15,7 @@ export default function IdeasScreen() {
 }
 
 IdeasScreen.navigationOptions = {
-  title: 'Ideas',
+  title: 'Second Choice',
 };
 
 const styles = StyleSheet.create({

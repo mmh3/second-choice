@@ -28,7 +28,7 @@ function SearchScreen(props) {
 }
 
 SearchScreen.navigationOptions = {
-  title: 'Search',
+  title: 'Second Choice',
 };
 
 const styles = StyleSheet.create({
