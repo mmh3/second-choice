@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import {Text, StyleSheet, Button, ScrollView } from 'react-native';
+import {Text, StyleSheet, Button, ScrollView} from 'react-native';
 import TextInputWithImage from './TextInputWithImage';
 import firebase from 'firebase';
 import uuid from 'uuid/v4';
-
-const width = "100%";
+import RatingPicker from './RatingPicker';
 
 const CreateAlternateForm = ({ initialValues }) => {
   // TODO: figure out how to track this with an object. Couldn't get the set to work with the object...
@@ -12,10 +11,12 @@ const CreateAlternateForm = ({ initialValues }) => {
   const [originalImageUrl, setOriginalImageUrl] = useState('');
   const [originalUid, setOriginalUid] = useState('');
   const [originalGroupUid, setOriginalGroupUid] = useState('');
+  const [originalRating, setOriginalRating] = useState(0);
   
   const [alternative, setAlternative] = useState(initialValues.alternative);
   const [alternateKey, setAlternateKey] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [alternateRating, setAlternateRating] = useState(0);
 
   const retrieveOriginalAsync = async() => {
     try {
@@ -60,7 +61,7 @@ const CreateAlternateForm = ({ initialValues }) => {
     if (!originalUid) { //originalUid!== undefined && originalUid !== null && originalUid !== '')
       groupUid = uuid();
       foodUid = uuid();
-      firebase.database().ref('/food/' + foodUid).set({uid: foodUid, name: original, groupUid: groupUid, imageUrl: originalImageUrl});
+      firebase.database().ref('/food/' + foodUid).set({ uid: foodUid, name: original, groupUid: groupUid, imageUrl: originalImageUrl, rating: originalRating });
     }
     else {
       groupUid = originalGroupUid;
@@ -73,6 +74,7 @@ const CreateAlternateForm = ({ initialValues }) => {
       alternateFood.name = alternative;
       alternateFood.imageUrl = imageUrl;
       alternateFood.groupUid = groupUid;
+      alternateFood.rating = alternateRating;
       firebase.database().ref('/food/' + alternateFood.uid).set(alternateFood);
     }
     else {
@@ -84,9 +86,12 @@ const CreateAlternateForm = ({ initialValues }) => {
     setOriginalUid('');
     setOriginalGroupUid('');
     setOriginalImageUrl('');
+    setOriginalRating(0);
+
     setAlternative(null);
     setAlternateKey('');
     setImageUrl('');
+    setAlternateRating(0);
 
     // TODO: Clear the search results
 }
@@ -102,6 +107,7 @@ const CreateAlternateForm = ({ initialValues }) => {
         imageUrl={originalImageUrl}
         setImageUrl={(url) => setOriginalImageUrl(url)}
       />
+      <RatingPicker rating={ originalRating } setRating={ rating => setOriginalRating(rating) } />
       <Text style={styles.label}>Healthier Alternative:</Text>
       <TextInputWithImage
         value = {alternative}
@@ -110,6 +116,7 @@ const CreateAlternateForm = ({ initialValues }) => {
         imageUrl={imageUrl}
         setImageUrl={(url) => setImageUrl(url)}
       />
+      <RatingPicker rating={ alternateRating } setRating={ rating => setAlternateRating(rating) } />
       <Button title="Save" onPress={onSubmitAsync} />
     </ScrollView>
   );
