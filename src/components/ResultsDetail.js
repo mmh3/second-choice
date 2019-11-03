@@ -1,14 +1,13 @@
 import React from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native'; 
+import RatingDisplay from './RatingDisplay';
 
 const ResultsDetail = ({ result }) => {
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={{ uri: result.imageUrl }} />
       <Text style={styles.name}>{result.name}</Text>
-      <Text>
-        {result.name} Stars, {result.name} Reviews
-      </Text>
+      <RatingDisplay rating={result.rating} />
     </View>
   );
 };
