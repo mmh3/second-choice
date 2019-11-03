@@ -37,7 +37,7 @@ export const updateResult = (index, food) => {
     try {
         return (dispatch) => {
             console.log('food: ' + food.uid + ' ' + food.name + ' ' + food.imageUrl);
-            firebase.database().ref('/food').child(food.uid).update({name: food.name, imageUrl: food.imageUrl});
+            firebase.database().ref('/food').child(food.uid).update({name: food.name, imageUrl: food.imageUrl, rating: food.rating});
             dispatch({type: RESULTS_UPDATE, payload: {index, food} });
         }
     } catch (err) {

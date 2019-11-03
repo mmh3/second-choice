@@ -4,16 +4,19 @@ import { withNavigation } from 'react-navigation';
 import TextInputWithImage from './TextInputWithImage';
 import { connect } from 'react-redux';
 import { updateResult } from '../actions/ResultsActions';
+import RatingPicker from './RatingPicker';
 
 const EditFoodForm = (props) => {
   // TODO: figure out how to track this with an object. Couldn't get the set to work with the object...
   const [name, setName] = useState(props.food.name);
   const [imageUrl, setImageUrl] = useState(props.food.imageUrl);
+  const [rating, setRating] = useState(props.food.rating);
 
   const onSubmitAsync = async() => {
     var food = props.food;
     food.name = name;
     food.imageUrl = imageUrl;
+    food.rating = rating;
     props.updateResult(props.resultIndex, food);
 
     props.navigation.goBack(null);
@@ -21,7 +24,6 @@ const EditFoodForm = (props) => {
 
   return (
     <ScrollView scrollEnabled={true}>
-      
       <Text style={styles.label}>Name:</Text>
       <TextInputWithImage
         value={name}
@@ -30,6 +32,7 @@ const EditFoodForm = (props) => {
         imageUrl={imageUrl}
         setImageUrl={(url) => setImageUrl(url)}
       />
+      <RatingPicker rating={ rating } setRating={ rating => setRating(rating) } />
       <Button title="Save" onPress={onSubmitAsync} />
     </ScrollView>
   );
