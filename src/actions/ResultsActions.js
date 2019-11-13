@@ -17,7 +17,7 @@ export const search = (searchTerm) => {
                         item.key = childSnapshot.key;
 
                         // Don't add the item that was searched for.
-                        if (item.name === searchTerm) { return true; }
+                        if (item.name === searchTerm) { return false; }
 
                         resultsArray.push(item);
                     });
