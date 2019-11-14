@@ -22,6 +22,8 @@ export const search = (searchTerm) => {
                         resultsArray.push(item);
                     });
 
+                    // Sort resultsArray by rating descending so the healthiest foods are at the top.
+                    resultsArray.sort((a, b) => (a.rating > b.rating) ? -1 : 1);
                     dispatch({type: RESULTS_RETRIEVE, payload: resultsArray});
                     });
                 });
