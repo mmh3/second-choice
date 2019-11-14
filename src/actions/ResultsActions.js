@@ -4,7 +4,7 @@ import { RESULTS_RETRIEVE, RESULTS_UPDATE } from '../actions/types';
 export const search = (searchTerm) => {
     try {
         resultsArray = [];
-        console.log('searchTerm: ' + searchTerm);
+        searchFoodRating = 0;
 
         return (dispatch) => {
             firebase.database().ref('/food').orderByChild('name').equalTo(searchTerm)
@@ -17,14 +17,20 @@ export const search = (searchTerm) => {
                         item.key = childSnapshot.key;
 
                         // Don't add the item that was searched for.
-                        if (item.name === searchTerm) { return false; }
+                        if (item.name === searchTerm) { 
+                            searchFoodRating = item.rating;
+                            return false; 
+                        }
 
                         resultsArray.push(item);
                     });
 
+                    // Filter so we're only showing healthier results than what was searched for.
+                    var filteredResults = resultsArray.filter((item) => { return item.rating > searchFoodRating })
+
                     // Sort resultsArray by rating descending so the healthiest foods are at the top.
-                    resultsArray.sort((a, b) => (a.rating > b.rating) ? -1 : 1);
-                    dispatch({type: RESULTS_RETRIEVE, payload: resultsArray});
+                    filteredResults.sort((a, b) => (a.rating > b.rating) ? -1 : 1);
+                    dispatch({type: RESULTS_RETRIEVE, payload: filteredResults});
                     });
                 });
             });
