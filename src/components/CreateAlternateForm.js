@@ -29,6 +29,7 @@ const CreateAlternateForm = ({ initialValues }) => {
                 setOriginalUid(childSnapshot.val().uid);
                 setOriginalImageUrl(childSnapshot.val().imageUrl);
                 setOriginalGroupUid(childSnapshot.val().groupUid);
+                setOriginalRating(childSnapshot.val().rating);
             })
           }
         });
@@ -47,6 +48,8 @@ const CreateAlternateForm = ({ initialValues }) => {
             // TODO: figure out how to do this without a foreach...
             snapshot.forEach(function(childSnapshot) {
                 setAlternateKey(childSnapshot.key);
+                setImageUrl(childSnapshot.val().imageUrl);
+                setAlternateRating(childSnapshot.val().rating);
             })
           }
         });
