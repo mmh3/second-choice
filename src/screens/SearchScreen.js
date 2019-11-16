@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import SearchBar from '../components/SearchBar';
 import ResultsList from '../components/ResultsList';
 import { search } from '../actions/ResultsActions';
@@ -17,6 +17,7 @@ function SearchScreen(props) {
         onTermSubmit={() => {console.log('test: ' + term); props.search(term);}} //searchApi(term)}
       />
       {errorMessage ? <Text>{errorMessage}</Text> : null}
+      {props.retrieved && props.results.length <= 0 ? <Text style={styles.text}>I'm sorry, I couldn't find any healthier alternatives...</Text> : null}
       <ScrollView style={styles.container}>
         <ResultsList
           results={props.results}
@@ -37,12 +38,15 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     backgroundColor: '#fff',
   },
+  text: {
+    padding: 20
+  }
 });
 
 const mapStateToProps = (state) => {
-  const { results } = state.results;
+  const { results, retrieved } = state.results;
 
-  return { results };
+  return { results, retrieved };
 };
 
 export default connect(mapStateToProps, { search })(SearchScreen);

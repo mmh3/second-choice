@@ -1,13 +1,14 @@
 import { RESULTS_RETRIEVE, RESULTS_UPDATE } from '../actions/types';
   
   const INITIAL_STATE = {
-      results: []
+      results: [],
+      retrieved: false
   };
   
   export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
       case RESULTS_RETRIEVE:
-        return { ...state, results: action.payload };
+        return { ...state, results: action.payload, retrieved: true };
       case RESULTS_UPDATE:
         return { ...state, results: state.results.map((item, index) => {
             if (index !== action.payload.index) {
