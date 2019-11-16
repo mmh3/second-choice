@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Text, StyleSheet, Button, ScrollView} from 'react-native';
+import { KeyboardAvoidingView, Text, StyleSheet, Button, ScrollView} from 'react-native';
 import TextInputWithImage from './TextInputWithImage';
 import firebase from 'firebase';
 import uuid from 'uuid/v4';
@@ -100,7 +100,8 @@ const CreateAlternateForm = ({ initialValues }) => {
 }
 
   return (
-    <ScrollView scrollEnabled={true}>
+    <KeyboardAvoidingView behavior="position" enabled>
+      <ScrollView>
       
       <Text style={styles.label}>First Choice:</Text>
       <TextInputWithImage
@@ -121,7 +122,8 @@ const CreateAlternateForm = ({ initialValues }) => {
       />
       <RatingPicker rating={ alternateRating } setRating={ rating => setAlternateRating(rating) } />
       <Button title="Save" onPress={onSubmitAsync} />
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
